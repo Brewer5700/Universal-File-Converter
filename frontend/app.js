@@ -18,8 +18,6 @@ const resultsEl = document.getElementById('results');
 const convertButton = document.getElementById('convertButton');
 const apiKeyInput = document.getElementById('apiKey');
 
-const API_KEY_STORAGE = 'ufc_api_key';
-
 function getApiKey() {
   return apiKeyInput.value.trim();
 }
@@ -33,16 +31,6 @@ function apiHeaders() {
   return headers;
 }
 
-function saveApiKey() {
-  localStorage.setItem(API_KEY_STORAGE, getApiKey());
-}
-
-function loadApiKey() {
-  const saved = localStorage.getItem(API_KEY_STORAGE);
-  if (saved) {
-    apiKeyInput.value = saved;
-  }
-}
 
 async function fetchFormats() {
   const response = await fetch('/api/formats', { headers: apiHeaders() });
@@ -144,8 +132,6 @@ async function startConversion() {
     setStatus('Enter a target format.', true);
     return;
   }
-
-  saveApiKey();
 
   const formData = new FormData();
   formData.append('target_format', target);
@@ -249,9 +235,7 @@ function bindEvents() {
 
   formatSearch.addEventListener('input', renderFormats);
   convertButton.addEventListener('click', startConversion);
-  apiKeyInput.addEventListener('change', saveApiKey);
 }
 
-loadApiKey();
 bindEvents();
 fetchFormats().catch(error => setStatus(error.message, true));
