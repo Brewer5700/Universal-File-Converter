@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  converter:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - MAX_WORKERS=4
+      - MAX_UPLOAD_MB=200
+      - ALLOW_PUBLIC=false
+    volumes:
+      - ./data:/app/data
